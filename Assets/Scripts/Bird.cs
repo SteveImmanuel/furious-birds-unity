@@ -18,9 +18,13 @@ public class Bird : MonoBehaviour
     private BirdState state;
     private float minVelocity = 0.05f;
     private bool flagDestroy = false;
+    private GameObject particle;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        particle = GetComponentInChildren<ParticleSystem>(true).gameObject;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
     }
@@ -54,7 +58,10 @@ public class Bird : MonoBehaviour
 
     private IEnumerator DestroyAfter(float second)
     {
-        yield return new WaitForSeconds(second);
+        particle.SetActive(true);
+        spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1 - second);
         Destroy(gameObject);
     }
 
