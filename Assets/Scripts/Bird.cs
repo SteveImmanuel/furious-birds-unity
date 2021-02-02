@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CircleCollider2D))]
 public class Bird : MonoBehaviour
 {
-    public enum BirdState { Idle, Thrown }
+    public enum BirdState { Idle, Thrown, HitSomething }
     public GameObject parent;
-    public UnityAction OnBirdDestroy;
+    public UnityAction OnBirdDestroy = delegate { };
+    public UnityAction<Bird> OnBirdShot = delegate { };
 
-    private Rigidbody2D rb;
+
+    protected Rigidbody2D rb;
     private CircleCollider2D col;
     private BirdState state;
     private float minVelocity = 0.05f;
@@ -37,7 +41,7 @@ public class Bird : MonoBehaviour
             state = BirdState.Thrown;
         }
 
-        if (state == BirdState.Thrown && rb.velocity.sqrMagnitude < minVelocitySqr && !flagDestroy)
+        if ((state == BirdState.Thrown || state == BirdState.HitSomething) && rb.velocity.sqrMagnitude < minVelocitySqr && !flagDestroy)
         {
             //Hancurkan gameobject setelah 2 detik
             //jika kecepatannya sudah kurang dari batas minimum
@@ -46,7 +50,6 @@ public class Bird : MonoBehaviour
             flagDestroy = true;
             StartCoroutine(DestroyAfter(2));
         }
-
     }
 
     private IEnumerator DestroyAfter(float second)
@@ -57,10 +60,12 @@ public class Bird : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (OnBirdDestroy != null)
-        {
-            OnBirdDestroy();
-        }
+        OnBirdDestroy();
+    }
+
+    public virtual void OnTap()
+    {
+
     }
 
     public void MoveTo(Vector2 target, GameObject parent)
@@ -74,6 +79,16 @@ public class Bird : MonoBehaviour
         col.enabled = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.velocity = direction * speed * distance;
+        OnBirdShot(this);
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        state = BirdState.HitSomething;
+    }
+
+    public BirdState State
+    {
+        get { return state; }
     }
 }
