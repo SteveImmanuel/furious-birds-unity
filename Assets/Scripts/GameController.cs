@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(TrailController))]
 public class GameController : MonoBehaviour
 {
     public SlingShooter slingShooter;
-    public TrailController trailController;
     public List<Bird> birds;
     public List<Enemy> enemies;
 
+    private TrailController trailController;
     private bool isGameEnded = false;
     private Bird shotBird;
     private BoxCollider2D tapArea;
@@ -30,6 +31,7 @@ public class GameController : MonoBehaviour
         }
 
         tapArea = GetComponent<BoxCollider2D>();
+        trailController = GetComponent<TrailController>();
     }
 
     void Start()
