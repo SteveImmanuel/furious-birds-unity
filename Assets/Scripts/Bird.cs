@@ -17,13 +17,18 @@ public class Bird : MonoBehaviour
     private BirdState state;
     private float minVelocity = 0.05f;
     private bool flagDestroy = false;
-    private GameObject particle;
+    private GameObject furParticle;
     private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
+        InitializeComponent();
+    }
+
+    protected virtual void InitializeComponent()
+    {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        particle = GetComponentInChildren<ParticleSystem>(true).gameObject;
+        furParticle = transform.GetChild(0).gameObject;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CircleCollider2D>();
     }
@@ -39,11 +44,6 @@ public class Bird : MonoBehaviour
     {
         float minVelocitySqr = minVelocity * minVelocity;
 
-        if (state == BirdState.Idle && rb.velocity.sqrMagnitude >= minVelocitySqr)
-        {
-            state = BirdState.Thrown;
-        }
-
         if ((state == BirdState.Thrown || state == BirdState.HitSomething) && rb.velocity.sqrMagnitude < minVelocitySqr && !flagDestroy)
         {
             flagDestroy = true;
@@ -51,9 +51,9 @@ public class Bird : MonoBehaviour
         }
     }
 
-    private IEnumerator DestroyAfter(float second)
+    protected IEnumerator DestroyAfter(float second)
     {
-        particle.SetActive(true);
+        furParticle.SetActive(true);
         spriteRenderer.enabled = false;
         yield return new WaitForSeconds(1);
         yield return new WaitForSeconds(1 - second);
@@ -80,12 +80,16 @@ public class Bird : MonoBehaviour
         col.enabled = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.velocity = direction * speed * distance;
+        state = BirdState.Thrown;
         OnBirdShot(this);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        state = BirdState.HitSomething;
+        if (state == BirdState.Thrown)
+        {
+            state = BirdState.HitSomething;
+        }
     }
 
     public BirdState State

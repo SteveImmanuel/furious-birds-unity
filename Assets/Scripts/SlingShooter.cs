@@ -91,13 +91,13 @@ public class SlingShooter : MonoBehaviour
         Vector2 shootVelocity = direction * throwSpeed * distance;
 
         segments[0] = transform.position;
+        aimTrajectory.positionCount = aimTrajectorySegmentCount;
         for (int i = 1; i < aimTrajectorySegmentCount; i++)
         {
             float elapsedTime = i * Time.fixedDeltaTime * 20 / shootVelocity.magnitude; //make elapsed time inversely proportional with speed
             segments[i] = segments[0] + shootVelocity * elapsedTime + 0.5f * Physics2D.gravity * Mathf.Pow(elapsedTime, 2);
         }
 
-        aimTrajectory.positionCount = aimTrajectorySegmentCount;
         for (int i = 0; i < aimTrajectorySegmentCount; i++)
         {
             aimTrajectory.SetPosition(i, segments[i]);
