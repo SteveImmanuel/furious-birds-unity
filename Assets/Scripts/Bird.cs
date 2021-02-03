@@ -9,7 +9,7 @@ using UnityEngine.Events;
 public class Bird : MonoBehaviour
 {
     public enum BirdState { Idle, Thrown, HitSomething }
-    public UnityAction OnBirdDestroy = delegate { };
+    //public UnityAction OnBirdDestroy = delegate { };
     public UnityAction<Bird> OnBirdShot = delegate { };
 
     protected Rigidbody2D rb;
@@ -58,11 +58,6 @@ public class Bird : MonoBehaviour
         yield return new WaitForSeconds(1);
         yield return new WaitForSeconds(1 - second);
         Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        OnBirdDestroy();
     }
 
     public virtual void OnTap()

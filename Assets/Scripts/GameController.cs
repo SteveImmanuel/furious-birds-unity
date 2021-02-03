@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < birds.Count; i++)
         {
-            birds[i].OnBirdDestroy += ChangeBird;
+            //birds[i].OnBirdDestroy += ChangeBird;
             birds[i].OnBirdShot += AssignTrail;
         }
 
@@ -64,6 +64,8 @@ public class GameController : MonoBehaviour
 
     public void AssignTrail(Bird bird)
     {
+        ChangeBird();
+        CameraController.instance.SetFollowTarget(bird.transform);
         shotBird = bird;
         trailController.ShowTrail(bird);
         tapArea.enabled = true;

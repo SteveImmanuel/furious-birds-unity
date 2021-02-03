@@ -41,6 +41,7 @@ public class SlingShooter : MonoBehaviour
 
     void OnMouseUp()
     {
+        CameraController.instance.isAiming = false;
         col.enabled = false;
         Vector2 direction = (startPos - (Vector2)transform.position).normalized;
         float distance = Vector2.Distance(startPos, transform.position);
@@ -59,6 +60,8 @@ public class SlingShooter : MonoBehaviour
         {
             return;
         }
+
+        CameraController.instance.isAiming = true;
 
         Vector2 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = p - startPos;
