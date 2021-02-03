@@ -64,6 +64,11 @@ public class Bird : MonoBehaviour
     {
     }
 
+    private void OnDestroy()
+    {
+        GameController.instance.DecreaseBird();
+    }
+
     public void MoveTo(Vector2 target, GameObject parent)
     {
         gameObject.transform.SetParent(parent.transform);

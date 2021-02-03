@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
 
     private TrailController trailController;
     private bool isGameEnded = false;
+    private bool isGameOver = false;
+    private int birdCount;
     private Bird shotBird;
     private BoxCollider2D tapArea;
     [HideInInspector]
@@ -40,6 +42,7 @@ public class GameController : MonoBehaviour
             birds[i].OnBirdShot += AssignTrail;
         }
 
+        birdCount = birds.Count;
         slingShooter.InitiateBird(birds[0]);
         tapArea.enabled = false;
     }
@@ -51,7 +54,7 @@ public class GameController : MonoBehaviour
             LevelLoader.instance.LoadNextLevel();
         }
 
-        if (birds.Count == 0)
+        if (!isGameEnded && isGameOver)
         {
             LevelLoader.instance.FadeToLevel(0);
         }
@@ -71,7 +74,7 @@ public class GameController : MonoBehaviour
         if (birds.Count > 0)
         {
             slingShooter.InitiateBird(birds[0]);
-        }
+        } 
     }
 
     public void AssignTrail(Bird bird)
@@ -83,6 +86,14 @@ public class GameController : MonoBehaviour
         tapArea.enabled = true;
     }
 
+    public void DecreaseBird()
+    {
+        birdCount--;
+        if (birdCount == 0 && !isGameEnded)
+        {
+            isGameOver = true;
+        }
+    }
 
     public void DecreaseEnemy()
     {
