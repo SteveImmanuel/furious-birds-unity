@@ -14542,5 +14542,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8ed5eba095f4994a86f2d8c5a228bbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
+  health: 50
   brokenSprite: {fileID: 21300000, guid: fc174dc24ab0ff94cb0b9e2e93f17cea, type: 3}

@@ -44,6 +44,19 @@ public class GameController : MonoBehaviour
         tapArea.enabled = false;
     }
 
+    private void Update()
+    {
+        if (isGameEnded)
+        {
+            LevelLoader.instance.LoadNextLevel();
+        }
+
+        if (birds.Count == 0)
+        {
+            LevelLoader.instance.FadeToLevel(0);
+        }
+    }
+
     void ChangeBird()
     {
         tapArea.enabled = false;
