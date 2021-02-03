@@ -5,13 +5,12 @@ using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class Bird : MonoBehaviour
 {
     public enum BirdState { Idle, Thrown, HitSomething }
-    public GameObject parent;
     public UnityAction OnBirdDestroy = delegate { };
     public UnityAction<Bird> OnBirdShot = delegate { };
-
 
     protected Rigidbody2D rb;
     private CircleCollider2D col;
@@ -47,10 +46,6 @@ public class Bird : MonoBehaviour
 
         if ((state == BirdState.Thrown || state == BirdState.HitSomething) && rb.velocity.sqrMagnitude < minVelocitySqr && !flagDestroy)
         {
-            //Hancurkan gameobject setelah 2 detik
-            //jika kecepatannya sudah kurang dari batas minimum
-
-            //MENDING PAKE INVOKE
             flagDestroy = true;
             StartCoroutine(DestroyAfter(2));
         }
@@ -72,7 +67,6 @@ public class Bird : MonoBehaviour
 
     public virtual void OnTap()
     {
-
     }
 
     public void MoveTo(Vector2 target, GameObject parent)

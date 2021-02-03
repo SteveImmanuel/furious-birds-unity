@@ -47,10 +47,15 @@ public class SlingShooter : MonoBehaviour
 
     void OnMouseDrag()
     {
+        if (bird == null)
+        {
+            return;
+        }
+
         Vector2 p = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = p - startPos;
 
-        if (dir.sqrMagnitude > radius * radius) //KESALAHAN DI TUTORIAL TIDAK DIKUADRATKAN
+        if (dir.sqrMagnitude > radius * radius)
         {
             dir = dir.normalized * radius;
         }
@@ -68,12 +73,6 @@ public class SlingShooter : MonoBehaviour
 
     void DisplayTrajectory(float distance)
     {
-        //HARUSNYA DI ONDRAG LAH MABUK
-        if (bird == null)
-        {
-            return;
-        }
-
         Vector2 direction = (startPos - (Vector2)transform.position).normalized;
         Vector2[] segments = new Vector2[trajectorySegmentCount];
         Vector2 shootVelocity = direction * throwSpeed * distance;

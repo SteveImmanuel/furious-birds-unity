@@ -8,13 +8,15 @@ public class TrailController : MonoBehaviour
     public Bird targetBird;
 
     private List<GameObject> trails;
+    private int counter = 0;
+    private Vector3 lastPosition;
 
     void Start()
     {
         trails = new List<GameObject>();
     }
 
-    public void SetBird(Bird bird)
+    public void ShowTrail(Bird bird)
     {
         targetBird = bird;
 
@@ -24,13 +26,24 @@ public class TrailController : MonoBehaviour
         }
 
         trails.Clear();
+        StartCoroutine(SpawnTrail());
     }
 
     public IEnumerator SpawnTrail()
     {
-        trails.Add(Instantiate(trail, targetBird.transform.position, Quaternion.identity));
+        while (Vector2.Distance(targetBird.transform.position, lastPosition) < .8)
+        {
+            yield return null;
+        }
 
-        yield return new WaitForSeconds(0.1f);
+        GameObject spawned = Instantiate(trail, targetBird.transform.position, Quaternion.identity);
+        lastPosition = targetBird.transform.position;
+        trails.Add(spawned);
+        if (counter % 5 == 0)
+        {
+            spawned.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+        }
+        counter++;
 
         if (targetBird != null && targetBird.State != Bird.BirdState.HitSomething)
         {

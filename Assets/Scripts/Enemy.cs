@@ -6,36 +6,28 @@ using UnityEngine.Events;
 public class Enemy : MonoBehaviour
 {
     public float health = 50f;
-    public UnityAction<GameObject> OnEnemyDestroyed;
 
-    private bool isHit = false;
+    private GameController gameController;
 
+    private void Start()
+    {
+        gameController = GameController.instance;
+    }
     private void OnDestroy()
     {
-        if (isHit)
-        {
-            OnEnemyDestroyed(gameObject);
-        }
+        gameController.DecreaseEnemy();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Rigidbody2D>() == null) return;
-
-        if (collision.gameObject.tag == "Bird")
+        Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (rb != null)
         {
-            isHit = true;
-            Destroy(gameObject);
-        }
-        else if (collision.gameObject.tag == "Obstacle")
-        {
-            //Hitung damage yang diperoleh
             float damage = collision.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * 10;
             health -= damage;
 
             if (health <= 0)
             {
-                isHit = true;
                 Destroy(gameObject);
             }
         }
