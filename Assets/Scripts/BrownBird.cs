@@ -52,8 +52,4 @@ public class BrownBird : Bird
         Explode();
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
-    }
 }

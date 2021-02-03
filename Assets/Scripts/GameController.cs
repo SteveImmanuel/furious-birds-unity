@@ -8,13 +8,12 @@ public class GameController : MonoBehaviour
 {
     public SlingShooter slingShooter;
     public List<Bird> birds;
-    public List<Enemy> enemies;
+    public int enemyCount;
 
     private TrailController trailController;
     private bool isGameEnded = false;
     private Bird shotBird;
     private BoxCollider2D tapArea;
-    private int enemyCount;
     [HideInInspector]
     public static GameController instance;
 
@@ -43,7 +42,6 @@ public class GameController : MonoBehaviour
         }
 
         slingShooter.InitiateBird(birds[0]);
-        enemyCount = enemies.Count;
         tapArea.enabled = false;
     }
 
@@ -83,7 +81,7 @@ public class GameController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        tapArea.enabled = false;
         shotBird.OnTap();
+        tapArea.enabled = false;
     }
 }

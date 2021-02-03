@@ -5,11 +5,11 @@ using UnityEngine;
 public class TrailController : MonoBehaviour
 {
     public GameObject trail;
-    public Bird targetBird;
 
     private List<GameObject> trails;
     private int counter = 0;
     private Vector3 lastPosition;
+    private Bird targetBird;
 
     void Start()
     {
