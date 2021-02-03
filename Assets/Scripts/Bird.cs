@@ -9,7 +9,6 @@ using UnityEngine.Events;
 public class Bird : MonoBehaviour
 {
     public enum BirdState { Idle, Thrown, HitSomething }
-    //public UnityAction OnBirdDestroy = delegate { };
     public UnityAction<Bird> OnBirdShot = delegate { };
 
     protected Rigidbody2D rb;

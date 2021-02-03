@@ -46,8 +46,8 @@ public class SlingShooter : MonoBehaviour
         Vector2 direction = (startPos - (Vector2)transform.position).normalized;
         float distance = Vector2.Distance(startPos, transform.position);
 
+        bird.transform.parent = null;
         bird.Shoot(direction, distance, throwSpeed);
-
         gameObject.transform.position = startPos;
         aimTrajectory.enabled = false;
         ropeFront.SetPosition(0, ropeFrontIdlePos);
