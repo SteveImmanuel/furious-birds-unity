@@ -47,6 +47,7 @@ public class CameraController : MonoBehaviour
         deadZoneWidth = frame.m_DeadZoneWidth;
         xDamping = frame.m_XDamping;
         yDamping = frame.m_YDamping;
+        SetDummyToCenterAndFollow();
     }
 
     public void SetFollowTarget(Transform target)

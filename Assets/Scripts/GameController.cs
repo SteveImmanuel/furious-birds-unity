@@ -37,7 +37,6 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < birds.Count; i++)
         {
-            //birds[i].OnBirdDestroy += ChangeBird;
             birds[i].OnBirdShot += AssignTrail;
         }
 
