@@ -31,12 +31,17 @@ public class TrailController : MonoBehaviour
 
     public IEnumerator SpawnTrail()
     {
-        while (Vector2.Distance(targetBird.transform.position, lastPosition) < .8)
+        Vector2 currentPos = targetBird.transform.position;
+        while (Vector2.Distance(currentPos, lastPosition) < .8)
         {
+            if (targetBird != null)
+            {
+                currentPos = targetBird.transform.position;
+            }
             yield return null;
         }
 
-        GameObject spawned = Instantiate(trail, targetBird.transform.position, Quaternion.identity);
+        GameObject spawned = Instantiate(trail, currentPos, Quaternion.identity);
         lastPosition = targetBird.transform.position;
         trails.Add(spawned);
         if (counter % 5 == 0)
