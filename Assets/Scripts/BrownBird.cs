@@ -40,7 +40,6 @@ public class BrownBird : Bird
                 Rigidbody2D rb = collider.attachedRigidbody;
                 Vector2 force = rb.position - currentPos;
                 rb.AddForce(force * explosionForce, ForceMode2D.Impulse);
-                Debug.Log(collider.tag + collider.name);
             }
 
             StartCoroutine(DestroyAfter(2));

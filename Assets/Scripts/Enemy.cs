@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {
@@ -12,35 +12,39 @@ public class Enemy : MonoBehaviour
 
     private GameController gameController;
     private GameObject smokeParticle;
-    private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
-    private CircleCollider2D col;
+    private Collider2D col;
+    protected SpriteRenderer spriteRenderer;
 
     private void Start()
     {
+        InitializeComponent();
+    }
+
+    protected virtual void InitializeComponent()
+    {
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<CircleCollider2D>();
+        col = GetComponent<Collider2D>();
         smokeParticle = transform.GetChild(0).gameObject;
         spriteRenderer = GetComponent<SpriteRenderer>();
         gameController = GameController.instance;
     }
-    private void OnDestroy()
+
+    protected virtual void OnDestroy()
     {
         gameController.DecreaseEnemy();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            float damage = collision.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * 10;
-            health -= damage;
+        ContactPoint2D contact = collision.GetContact(0);
 
-            if (health <= 0)
-            {
-                StartCoroutine(DestroyAfter());
-            }
+        float damage = contact.relativeVelocity.magnitude * 5;
+        health -= damage;
+
+        if (health <= 0)
+        {
+            StartCoroutine(DestroyAfter());
         }
     }
 
@@ -48,6 +52,7 @@ public class Enemy : MonoBehaviour
     {
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.velocity = Vector3.zero;
+        rb.angularVelocity = 0;
         col.enabled = false;
         smokeParticle.SetActive(true);
         spriteRenderer.enabled = false;
